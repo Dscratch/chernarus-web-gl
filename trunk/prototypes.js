@@ -33,7 +33,7 @@ function Camera()
 	
 	this.rotation = new Vector3D();
 };
-Camera.prototype.moveForward()
+Camera.prototype.moveForward = function()
 {
 	//this.position
 }
