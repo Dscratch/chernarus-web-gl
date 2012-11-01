@@ -30,10 +30,10 @@ function HeightMap()
 function Camera()
 {
 	this.position = new Vector3D();
-	
-	this.rotation = new Vector3D();
+	this.direction = new Vector3D();
+	this.direction.z = 1;
 };
 Camera.prototype.moveForward = function()
 {
-	//this.position
+	this.position = this.position.addVector3D(this.direction);
 }

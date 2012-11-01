@@ -187,7 +187,7 @@
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         debugVertexColorBuffer.itemSize = 4;
         debugVertexColorBuffer.numItems = 6;
-		
+		/*
 
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -220,7 +220,7 @@
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sqColors), gl.STATIC_DRAW);
         squareVertexColorBuffer.itemSize = 4;
         squareVertexColorBuffer.numItems = 4;
-		
+	*/	
 //===
 		terrainVertexPositionBuffer = new Array();
 		terrainVertexColorBuffer = new Array();
@@ -293,8 +293,8 @@
 				terrainColors[currentColor++] = 1;
 				
 				
-				
-				/*terrainColors[currentColor++] = texture[x*heightMap.width + currentTex]/255;
+				/*
+				terrainColors[currentColor++] = texture[x*heightMap.width + currentTex]/255;
 				terrainColors[currentColor++] = texture[x*heightMap.width + currentTex+1]/255;
 				terrainColors[currentColor++] = texture[x*heightMap.width + currentTex+2]/255;
 				terrainColors[currentColor++] = texture[x*heightMap.width + currentTex+3]/255;				
@@ -303,7 +303,7 @@
 				terrainColors[currentColor++] = texture[(x+1)*heightMap.width + currentTex+1]/255;
 				terrainColors[currentColor++] = texture[(x+1)*heightMap.width + currentTex+2]/255;
 				terrainColors[currentColor++] = texture[(x+1)*heightMap.width + currentTex+3]/255;
-
+				
 				
 				currentTex += 4;
 				*/
@@ -341,12 +341,12 @@
 
         mat4.identity(mvMatrix);
         
-		//mat4.rotate(mvMatrix, degToRad(camera.rotY), [0, 1, 0]);
-		//mat4.translate(mvMatrix, [camera.position.x, camera.position.y, camera.position.z]);
+		mat4.rotate(mvMatrix, degToRad(camera.rotY), [0, 1, 0]);
+		mat4.translate(mvMatrix, [camera.position.x, camera.position.y, camera.position.z]);
 		
-		mat4.rotate(mvMatrix, 1.57, [1, 0, 0]);
-		mat4.rotate(mvMatrix, -1.57, [0, 1, 0]);
-		mat4.translate(mvMatrix, [0, -3000, 0]);
+		//mat4.rotate(mvMatrix, 1.57, [1, 0, 0]);
+		//mat4.rotate(mvMatrix, -1.57, [0, 1, 0]);
+		//mat4.translate(mvMatrix, [0, -3000, 0]);
 		
 //===============
 
@@ -367,7 +367,8 @@
 
         mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
 		mat4.rotate(mvMatrix, rSquare/10, [0, 0, 1]);
-
+		rSquare += 0.1;
+/*
         mvPushMatrix();
         //mat4.rotate(mvMatrix, degToRad(rSquare), [0.01, 0, 0]);
 		mat4.rotate(mvMatrix, rSquare +=0.1, [0, 1, 0]);
@@ -382,7 +383,7 @@
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
 
         mvPopMatrix();
-		
+		*/
 //===
 		mvPushMatrix();
 		
@@ -415,7 +416,6 @@
             //rTri += (90 * elapsed) / 1000.0;
             //rSquare += (75 * elapsed) / 1000.0;
         }
-		document.getElementById("fpsLabel").value = "FPS: " + 1000/lastTime - timeNow;
         lastTime = timeNow;
     }
 
@@ -428,20 +428,19 @@
 	function keyPressed(event)
 	{
 		var keyPress = event.which;
-		/*
+		
 		switch(keyPress)
 		{
 			case 87: // w
-				camera.z+=5;
+				camera.moveForward();
 				break;
 			case 65: // a
-				camera.x += 5;
+				camera.rotateLeft();
 				break;
 			case 83: // s
-				camera.z-=5;
+				camera.rotateRight();
 				break;
 			case 68: // d
-				camera.x -=5;
 				break;
 			case 16: // shift
 				camera.y -= 5;
@@ -450,12 +449,10 @@
 				camera.y +=5;
 				break;
 			case 69: // e
-				camera.rotY += 1;
 				break;
 			case 81: // e
-				camera.rotY -= 1;
 				break
-		}*/
+		}
 	}
 
 	var camera;
@@ -541,7 +538,7 @@
 			webGLStart();
 		};
 		
-		img.src = "chernarus1028.png";
+		img.src = "chernarusT2048d.bmp";
 	}
 	
 </script>
