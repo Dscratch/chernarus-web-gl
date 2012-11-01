@@ -3,13 +3,16 @@ function Vector3D()
 	this.x = 0;
 	this.y = 0;
 	this.z = 0;
-};/*
+};
 Vector3D.prototype.magnitude = function()
 {
-	return Math.sqrt( (x) + (y) + (z) );
+	return Math.sqrt( (this.x) + (this.y) + (this.z) );
 };
 Vector3D.prototype.divideBy = function(value)
 {
+	if(value == 0)
+		return this;
+		
 	var newVec = new Vector3D();
 	
 	newVec.x = this.x/value;
@@ -20,9 +23,22 @@ Vector3D.prototype.divideBy = function(value)
 };
 Vector3D.prototype.asUnitVector = function()
 {
+	if(this.x == 0 && this.y == 0 && this.z == 0)
+		return this;
+		
 	return this.divideBy(this.magnitude());
 };
-Vector3D.prototype.rotateX(value)
+Vector3D.prototype.addVector3D = function(value)
+{
+	var newVec = new Vector3D();
+	
+	newVec.x = this.x + value.x;
+	newVec.y = this.y + value.y;
+	newVec.z = this.z + value.z;
+	
+	return newVec;
+}
+Vector3D.prototype.rotateX = function(value)
 {
 	var newVec = new Vector3D();
 	
@@ -32,7 +48,7 @@ Vector3D.prototype.rotateX(value)
 	
 	return newVec;
 };
-Vector3D.prototype.rotateY(value)
+Vector3D.prototype.rotateY = function(value)
 {
 	var newVec = new Vector3D();
 	
@@ -42,7 +58,7 @@ Vector3D.prototype.rotateY(value)
 	
 	return newVec;
 };
-Vector3D.prototype.rotateZ(value)
+Vector3D.prototype.rotateZ = function(value)
 {
 	var newVec = new Vector3D();
 	
@@ -51,4 +67,4 @@ Vector3D.prototype.rotateZ(value)
 	newVec.z = this.z;
 	
 	return newVec;
-};*/
+};
