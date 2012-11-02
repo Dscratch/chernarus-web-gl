@@ -162,13 +162,13 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexBuffer);
         var vertices = [
              0.0, 0.0, 0.0, 
-			 1.0, 0.0, 0.0,
+			 1000.0, 0.0, 0.0,
 			 
              0.0, 0.0, 0.0,
-			 0.0, 1.0, 0.0,
+			 0.0, 1000.0, 0.0,
 			 
 			 0.0, 0.0, 0.0,
-			 0.0, 0.0, 1.0
+			 0.0, 0.0, 1000.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         debugVertexBuffer.itemSize = 3;
@@ -341,8 +341,12 @@
 
         mat4.identity(mvMatrix);
         
-		mat4.rotate(mvMatrix, degToRad(camera.rotY), [0, 1, 0]);
+		//mat4.rotate(mvMatrix, camera.direction.x, [1, 0, 0]);
+		//mat4.rotate(mvMatrix, camera.direction.y, [0, 1, 0]);
+		//mat4.rotate(mvMatrix, camera.direction.z, [0, 0, 1]);
+		
 		mat4.translate(mvMatrix, [camera.position.x, camera.position.y, camera.position.z]);
+		mat4.lookAt(mvMatrix, camera.position.addVector3D(camera.direction),[0,1,0]);
 		
 		//mat4.rotate(mvMatrix, 1.57, [1, 0, 0]);
 		//mat4.rotate(mvMatrix, -1.57, [0, 1, 0]);
@@ -366,8 +370,8 @@
 //==============
 
         mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-		mat4.rotate(mvMatrix, rSquare/10, [0, 0, 1]);
-		rSquare += 0.1;
+		//mat4.rotate(mvMatrix, rSquare/10, [0, 0, 1]);
+		//rSquare += 0.1;
 /*
         mvPushMatrix();
         //mat4.rotate(mvMatrix, degToRad(rSquare), [0.01, 0, 0]);

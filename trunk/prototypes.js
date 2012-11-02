@@ -32,8 +32,23 @@ function Camera()
 	this.position = new Vector3D();
 	this.direction = new Vector3D();
 	this.direction.z = 1;
+	
+	this.transform = mat4.create();
+	mat4.identity(this.transform);
 };
 Camera.prototype.moveForward = function()
 {
-	this.position = this.position.addVector3D(this.direction);
-}
+	//this.position = this.position.addVector3D(this.direction);
+};
+Camera.prototype.moveBackward = function()
+{
+	//this.position = this.position.subtractVector3D(this.direction);
+};
+Camera.prototype.rotateLeft = function()
+{
+	//this.direction = this.direction.rotateY(0.1);
+};
+Camera.prototype.rotateRight = function()
+{
+	//this.direction = this.direction.rotateY(-0.1);
+};

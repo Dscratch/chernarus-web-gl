@@ -37,7 +37,17 @@ Vector3D.prototype.addVector3D = function(value)
 	newVec.z = this.z + value.z;
 	
 	return newVec;
-}
+};
+Vector3D.prototype.subtractVector3D = function(value)
+{
+	var newVec = new Vector3D();
+	
+	newVec.x = this.x - value.x;
+	newVec.y = this.y - value.y;
+	newVec.z = this.z - value.z;
+	
+	return newVec;
+};
 Vector3D.prototype.rotateX = function(value)
 {
 	var newVec = new Vector3D();
