@@ -468,19 +468,24 @@
 		}
 	}
 	
+	var mouseDown;
 	var lastMouseX;
 	var lastMouseY;
 	
+	function handleMouseDown(event) {
+		mouseDown = true;
+		lastMouseX = event.clientX;
+		lastMouseY = event.clientY;
+	}
+
+	function handleMouseUp(event) {
+		mouseDown = false;
+	}
 	function handleMouseMove(event) {
 		
-		if(lastMouseX == 0 && lastMouseY == 0)
-		{
-			lastMouseX = event.clientX;
-			lastMouseY = event.clientY;
-			
+		if(!mouseDown){
 			return;
 		}
-		
 		var deltaX = lastMouseX - event.clientX;
 		var deltaY = lastMouseY - event.clientY;
 		
@@ -499,6 +504,8 @@
         initShaders()
         initBuffers();
 		
+		canvas.onmousedown = handleMouseDown;
+		document.onmouseup = handleMouseUp;
 		document.onmousemove = handleMouseMove;
 		
 		lastMouseX = 0;
@@ -587,9 +594,9 @@
 </head>
 
 
-<body onload="loadMap();" onkeydown="keyPressed(event)">
+<body onload="loadMap();" onkeydown="keyPressed(event)" onClick="mouseClick(event)">
 
-    <canvas id="lesson03-canvas" style="border: none;" width="800" height="700"></canvas>
+    <canvas id="lesson03-canvas" style="border: none;" width="1200" height="700"></canvas>
 	<input type="text" id="fpsLabel" runat="server" />
 
 </body>
