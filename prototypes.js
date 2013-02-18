@@ -39,6 +39,8 @@ function Camera()
 Camera.prototype.moveForward = function()
 {
 	//this.position = this.position.addVector3D(this.direction);
+	this.position.x -= Math.sin(degToRad(this.direction.y));
+    this.position.z -= Math.cos(degToRad(this.direction.y));
 };
 Camera.prototype.moveBackward = function()
 {
@@ -47,8 +49,10 @@ Camera.prototype.moveBackward = function()
 Camera.prototype.rotateLeft = function()
 {
 	//this.direction = this.direction.rotateY(0.1);
+	this.direction.y++;
 };
 Camera.prototype.rotateRight = function()
 {
 	//this.direction = this.direction.rotateY(-0.1);
+	this.direction.y--;
 };

@@ -35,7 +35,6 @@
     }
 </script>
 
-
 <script type="text/javascript">
 
     var gl;
@@ -336,17 +335,20 @@
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+	
+		
         mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 10000.0, pMatrix);
 
         mat4.identity(mvMatrix);
+		
+		
         
-		//mat4.rotate(mvMatrix, camera.direction.x, [1, 0, 0]);
-		//mat4.rotate(mvMatrix, camera.direction.y, [0, 1, 0]);
+		mat4.rotate(mvMatrix, degToRad(-camera.direction.x), [1, 0, 0]);
+		mat4.rotate(mvMatrix, degToRad(-camera.direction.y), [0, 1, 0]);
 		//mat4.rotate(mvMatrix, camera.direction.z, [0, 0, 1]);
 		
-		mat4.translate(mvMatrix, [camera.position.x, camera.position.y, camera.position.z]);
-		mat4.lookAt(mvMatrix, camera.position.addVector3D(camera.direction),[0,1,0]);
+		mat4.translate(mvMatrix, [-camera.position.x, -camera.position.y, -camera.position.z]);
+		//mat4.lookAt(mvMatrix, camera.position.addVector3D(camera.direction),[0,1,0]);
 		
 		//mat4.rotate(mvMatrix, 1.57, [1, 0, 0]);
 		//mat4.rotate(mvMatrix, -1.57, [0, 1, 0]);
@@ -369,7 +371,7 @@
 		
 //==============
 
-        mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+        //mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
 		//mat4.rotate(mvMatrix, rSquare/10, [0, 0, 1]);
 		//rSquare += 0.1;
 /*
@@ -389,7 +391,7 @@
         mvPopMatrix();
 		*/
 //===
-		mvPushMatrix();
+		//mvPushMatrix();
 		
 		//mat4.rotate(mvMatrix, degToRad(rSquare), [0, 1, 0]);
 		mat4.translate(mvMatrix, [-heightMap.width/2, 0, -heightMap.height/2]);
@@ -404,7 +406,7 @@
 			setMatrixUniforms();
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, terrainVertexPositionBuffer[current].numItems);
 		}
-		mvPopMatrix();
+		//mvPopMatrix();
 //===
 
     }
@@ -420,6 +422,7 @@
             //rTri += (90 * elapsed) / 1000.0;
             //rSquare += (75 * elapsed) / 1000.0;
         }
+		document.getElementById('fpsLabel').Value =  "FPS =" + 1/(timeNow-lastTime);
         lastTime = timeNow;
     }
 
@@ -447,10 +450,10 @@
 			case 68: // d
 				break;
 			case 16: // shift
-				camera.y -= 5;
+				camera.position.y -= 5;
 				break;
 			case 17: //crtl
-				camera.y +=5;
+				camera.position.y +=5;
 				break;
 			case 69: // e
 				break;
