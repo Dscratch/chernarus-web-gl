@@ -33,26 +33,36 @@ function Camera()
 	this.direction = new Vector3D();
 	this.direction.z = 1;
 	
+	this.moveSpeed = 5;
+	
 	this.transform = mat4.create();
 	mat4.identity(this.transform);
 };
 Camera.prototype.moveForward = function()
 {
-	//this.position = this.position.addVector3D(this.direction);
-	this.position.x -= Math.sin(degToRad(this.direction.y));
-    this.position.z -= Math.cos(degToRad(this.direction.y));
+	this.position.x -= Math.sin(degToRad(this.direction.y)) * this.moveSpeed;
+    this.position.z -= Math.cos(degToRad(this.direction.y)) * this.moveSpeed;
+	this.position.y += Math.sin(degToRad(this.direction.x)) * this.moveSpeed;
 };
 Camera.prototype.moveBackward = function()
 {
-	//this.position = this.position.subtractVector3D(this.direction);
+
+	this.position.x += Math.sin(degToRad(this.direction.y)) * this.moveSpeed;
+    this.position.z += Math.cos(degToRad(this.direction.y)) * this.moveSpeed;
 };
 Camera.prototype.rotateLeft = function()
 {
-	//this.direction = this.direction.rotateY(0.1);
-	this.direction.y++;
+	this.direction.y+=1;
 };
 Camera.prototype.rotateRight = function()
 {
-	//this.direction = this.direction.rotateY(-0.1);
-	this.direction.y--;
+	this.direction.y-=1;
+};
+Camera.prototype.rotateUp = function()
+{
+	this.direction.x +=1;
+};
+Camera.prototype.rotateDown = function()
+{
+	this.direction.x -= 1;
 };
