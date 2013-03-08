@@ -9,6 +9,7 @@
 <script type="text/javascript" src="jquery-1.7.2.js"></script>
 <script type="text/javascript" src="prototypes.js"></script>
 <script type="text/javascript" src="Vector.js"></script>
+<script type="text/javascript" src="Camera.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -156,7 +157,6 @@
 
     function initBuffers() {
 	
-	
 		debugVertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexBuffer);
         var vertices = [
@@ -186,46 +186,12 @@
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         debugVertexColorBuffer.itemSize = 4;
         debugVertexColorBuffer.numItems = 6;
-		/*
 
-        squareVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-		
-		var sqHeight = -10;
-		
-        vertices = [
-            -heightMap.width/2, sqHeight,  heightMap.height/2,
-			heightMap.width/2,  sqHeight,  heightMap.height/2,
-            -heightMap.width/2, sqHeight,  -heightMap.height/2,
-            heightMap.width/2,  sqHeight,  -heightMap.height/2
-            ];
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        squareVertexPositionBuffer.itemSize = 3;
-        squareVertexPositionBuffer.numItems = 4;
-
-        squareVertexColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
-		
-		var sqColors = [
-			1.0, 0.0, 0.0, 1.0,
-			1.0, 0.0, 0.0, 1.0,
-			0.0, 1.0, 0.0, 1.0,
-			0.0, 1.0, 0.0, 1.0,
-			];
-        //colors = []
-        //for (var i=0; i < 4; i++) {
-        //    colors = colors.concat([0.5, 0.5, 1.0, 1.0]);
-        //}
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sqColors), gl.STATIC_DRAW);
-        squareVertexColorBuffer.itemSize = 4;
-        squareVertexColorBuffer.numItems = 4;
-	*/	
-//===
 		terrainVertexPositionBuffer = new Array();
 		terrainVertexColorBuffer = new Array();
 		
-		var seaLevel = 42;
-		//alert("start Buffer");
+		var seaLevel = 27;
+		var terrainHeightScalar = 3;
 		for(var x =0;x < heightMap.width - 1;x++)
 		{	
 			var terrainVertices = new Array();
@@ -238,20 +204,20 @@
 			for(var z =0;z<heightMap.height;z++)
 			{
 				//Verts
-				var y = heightMap.heightMapData[x*heightMap.width + z];
-				if (y < seaLevel)
-				{
-					y = seaLevel-1;
-				}
+				var y = heightMap.heightMapData[x*heightMap.width + z]/terrainHeightScalar;
+				//if (y < seaLevel)
+				//{
+				//	y = seaLevel-1;
+				//}
 				terrainVertices[currentVert++] = x;//X pos
 				terrainVertices[currentVert++] = y;//Y Pos				
 				terrainVertices[currentVert++] = z;//Z pos
 				
-				y = heightMap.heightMapData[(x+1)*heightMap.width + z];
-				if (y < seaLevel)
-				{
-					y = seaLevel-1;
-				}
+				y = heightMap.heightMapData[(x+1)*heightMap.width + z]/terrainHeightScalar;
+				//if (y < seaLevel)
+				//{
+				//	y = seaLevel-1;
+				//}
 				
 				terrainVertices[currentVert++] = x+1;//X pos
 				terrainVertices[currentVert++] = y;//Y Pos				
@@ -345,55 +311,22 @@
         
 		mat4.rotate(mvMatrix, degToRad(-camera.direction.x), [1, 0, 0]);
 		mat4.rotate(mvMatrix, degToRad(-camera.direction.y), [0, 1, 0]);
-		//mat4.rotate(mvMatrix, camera.direction.z, [0, 0, 1]);
-		
 		mat4.translate(mvMatrix, [-camera.position.x, -camera.position.y, -camera.position.z]);
-		//mat4.lookAt(mvMatrix, camera.position.addVector3D(camera.direction),[0,1,0]);
-		
-		//mat4.rotate(mvMatrix, 1.57, [1, 0, 0]);
-		//mat4.rotate(mvMatrix, -1.57, [0, 1, 0]);
-		//mat4.translate(mvMatrix, [0, -3000, 0]);
-		
-//===============
 
 		mvPushMatrix();
 		
-		gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexBuffer);
-		gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, debugVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, debugVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
-		setMatrixUniforms();
-		gl.drawArrays(gl.LINES, 0, debugVertexBuffer.numItems);
+			gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexBuffer);
+			gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, debugVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+			
+			gl.bindBuffer(gl.ARRAY_BUFFER, debugVertexColorBuffer);
+			gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, debugVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+			
+			setMatrixUniforms();
+			gl.drawArrays(gl.LINES, 0, debugVertexBuffer.numItems);
 		
 		mvPopMatrix();
 		
-//==============
 
-        //mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-		//mat4.rotate(mvMatrix, rSquare/10, [0, 0, 1]);
-		//rSquare += 0.1;
-/*
-        mvPushMatrix();
-        //mat4.rotate(mvMatrix, degToRad(rSquare), [0.01, 0, 0]);
-		mat4.rotate(mvMatrix, rSquare +=0.1, [0, 1, 0]);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-
-        mvPopMatrix();
-		*/
-//===
-		//mvPushMatrix();
-		
-		//mat4.rotate(mvMatrix, degToRad(rSquare), [0, 1, 0]);
 		mat4.translate(mvMatrix, [-heightMap.width/2, 0, -heightMap.height/2]);
 		for(var current = 0; current < terrainVertexPositionBuffer.length;current ++)
 		{
@@ -406,8 +339,7 @@
 			setMatrixUniforms();
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, terrainVertexPositionBuffer[current].numItems);
 		}
-		//mvPopMatrix();
-//===
+
 
     }
 
@@ -420,8 +352,6 @@
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
 
-            //rTri += (90 * elapsed) / 1000.0;
-            //rSquare += (75 * elapsed) / 1000.0;
 			var fpsTextBox = document.getElementById('fpsLabel');
 			fpsTextBox.value = "FPS: " + (1000/(timeNow - lastTime)).toFixed(2);
         }
@@ -445,13 +375,13 @@
 				camera.moveForward();
 				break;
 			case 65: // a
-				camera.rotateLeft();
+				camera.moveLeft();
 				break;
 			case 83: // s
 				camera.moveBackward();
 				break;
 			case 68: // d
-				camera.rotateRight();
+				camera.moveRight();
 				break;
 			case 16: // shift
 				camera.position.y += 5;
@@ -489,9 +419,10 @@
 		var deltaX = lastMouseX - event.clientX;
 		var deltaY = lastMouseY - event.clientY;
 		
-		camera.direction.y += deltaX /10;
-		camera.direction.x += deltaY /10;
 		
+		camera.direction.y += deltaX /10;		
+		camera.direction.x += deltaY /10;
+						
 		lastMouseX = event.clientX;
 		lastMouseY = event.clientY;
 	}
@@ -548,23 +479,16 @@
 			var numDataItemsTotal = img.width*img.height*4;
 			var tempData = ctx.getImageData(0, 0, img.width, img.height).data;
 			
-			//alert((img.width*img.height)/tempData.length)
 			var j=0;
 			for(var i =0; i < numDataItemsTotal;i+=4) // I only need the Red data.
 			{
 				heightMap.heightMapData[j++] = tempData[i];
 			}
-			
-			//alert(heightMap.heightMapData.length - img.width*img.height);			
-			//heightMap.heightMapData = ctx.getImageData(0, 0, img.width, img.height).data;
-			
-			//alert("load Finished");
-			//loadTexture();
-			//alert("HeightMap" + sizeof(heightMap));
+
 			webGLStart();
 		};
 		
-		img.src = "chernarus2048IB2.bmp";
+		img.src = "chernarus2048IBHiCon.bmp";
 		
 	}
 	function loadTexture()
