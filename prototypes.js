@@ -18,9 +18,9 @@ HeightMapPixel.prototype.colourHeightRGB = function(){
 	if(this.red+this.green+this.blue == 0)
 		return 0;
 		
-	return (this.red * 0.3 + this.green * 0.59 + this.blue * 0.11)/255;//((((this.red * 1000.0)+this.green) * 1000.0)+this.blue)/(255255255/5);
+	return (this.red * 0.3 + this.green * 0.59 + this.blue * 0.11)/255;
 };
-//===================================================
+
 function HeightMap()
 {
 	this.width = 0;
